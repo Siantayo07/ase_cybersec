@@ -3,6 +3,7 @@ from flask import Flask, request, make_response, jsonify
 app = Flask(__name__, instance_relative_config=True)
 from functools import reduce
 import operator
+import os, time
 
 @app.route('/add')
 def add():
@@ -74,6 +75,24 @@ def reduce_op():
         return make_response('Invalid Operation\n', 400)
     
     return make_response(jsonify(s=result), 200)
+
+@app.route('/crash/')
+def crash(): 
+    h = request.host
+    if h:
+        response=  make_response(jsonify(host=h), 200)
+
+        # time.sleep(30)
+
+        os._exit(0)
+
+        return response
+    else:
+        return make_response('Invalid Input\n', 400)
+    
+    
+
+    
   
 
 #Endpoint /sub for subtraction which takes a and b as query parameters.
